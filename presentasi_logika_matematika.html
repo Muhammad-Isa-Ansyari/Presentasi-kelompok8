@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Presentasi — Logika Matematika</title>
+<style>
+:root{--bg:#081225;--panel:#111f38;--panel2:#172a49;--ink:#f4f7ff;--muted:#a9b8d2;--cyan:#62e5dc;--blue:#7c9cff;--gold:#ffd479;--line:#29405f}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--ink);overflow:hidden}
+body:before{content:"";position:fixed;inset:-20%;background:radial-gradient(circle at 18% 20%,#164c68 0,transparent 28%),radial-gradient(circle at 85% 80%,#33245e 0,transparent 30%);filter:blur(30px);opacity:.65;pointer-events:none}
+.deck{position:relative;width:100%;height:100%;display:grid;place-items:center;padding:32px 30px 88px}
+.slide{position:absolute;width:min(1180px,calc(100vw - 64px));height:min(690px,calc(100vh - 140px));min-height:440px;border:1px solid #304766;border-radius:28px;background:linear-gradient(135deg,rgba(17,31,56,.97),rgba(9,20,39,.97));box-shadow:0 30px 100px #0008;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(250px,.7fr);gap:26px;padding:clamp(25px,4vw,58px);opacity:0;transform:translateX(70px) scale(.97);pointer-events:none;transition:opacity .55s ease,transform .65s cubic-bezier(.2,.8,.2,1);overflow:auto}
+.slide.active{opacity:1;transform:translateX(0) scale(1);pointer-events:auto;z-index:2}
+.slide.exit-left{transform:translateX(-70px) scale(.97)}
+.content{min-width:0;display:flex;flex-direction:column;justify-content:center}
+.kicker{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);font-weight:800;margin-bottom:15px}
+h1{font-size:clamp(34px,5vw,62px);line-height:1.02;letter-spacing:-.04em;margin:0 0 15px}
+.subtitle{font-size:clamp(16px,1.8vw,21px);color:var(--muted);line-height:1.55;margin:0 0 26px}
+p{line-height:1.65;color:#dce6f7}.accent{color:var(--gold)}
+.image-zone{align-self:stretch;min-height:240px;border:1.5px dashed #55708f;border-radius:22px;background:linear-gradient(145deg,#172d4b99,#0a183099);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:16px;position:relative;overflow:hidden;transition:.25s}
+.image-zone.drag{border-color:var(--cyan);background:#1b526055;transform:scale(1.01)}
+.image-zone img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#091326}
+.image-zone .hint{z-index:1;pointer-events:none;color:var(--muted);max-width:220px}
+.image-zone.has-image .hint{display:none}
+.image-zone .plus{font-size:42px;color:var(--cyan);display:block;margin-bottom:8px}
+.image-actions{position:absolute;z-index:3;bottom:12px;right:12px;display:flex;gap:7px}
+.small-btn{border:1px solid #58718f;background:#10223d;color:white;border-radius:9px;padding:8px 10px;font-size:12px;cursor:pointer;backdrop-filter:blur(10px)}
+.small-btn:hover{background:#254568}
+.image-zone:not(.has-image) .image-actions{display:none}
+ul,ol{padding-left:22px;color:#e6edfa;line-height:1.8}li{padding-left:5px;margin:5px 0}
+.quote{padding:14px 17px;margin:9px 0;background:#172b49;border:1px solid #2a4262;border-radius:14px;border-left:3px solid var(--cyan)}
+.quote b{display:block;color:var(--gold);font-size:13px;margin-bottom:4px}.quote span{line-height:1.5}
+.callout{margin-top:20px;padding:14px 17px;border-radius:13px;background:#143e4a88;border:1px solid #26717a;color:#dffffb;line-height:1.55}
+table{width:100%;border-collapse:separate;border-spacing:0;overflow:hidden;border-radius:14px;font-size:clamp(11px,1.2vw,15px);background:#0d1a30;border:1px solid var(--line)}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid #263b58;border-right:1px solid #263b58}
+th{background:#1c3557;color:var(--cyan);font-weight:800}tr:last-child td{border-bottom:0}td:last-child,th:last-child{border-right:0}
+tr.highlight td{background:#1b665d88;color:#fff;font-weight:800}
+.table-wrap{overflow:auto;max-height:430px;border-radius:14px}
+.formula{padding:15px 17px;margin:10px 0;border:1px solid #2b4566;border-radius:15px;background:#142744}
+.formula b{color:var(--gold);font-size:13px}.formula strong{display:block;font-size:clamp(19px,2vw,25px);margin:6px 0;color:var(--cyan);font-family:ui-monospace,monospace}
+.cover h1{font-size:clamp(48px,7vw,82px)}.cover .subtitle{font-size:25px;color:var(--gold)}
+.people{margin-top:22px;color:#c5d2e8;line-height:1.9;font-size:14px}
+.thanks{font-size:clamp(30px,4vw,52px);color:var(--gold);font-weight:850;margin-top:24px}
+.controls{position:fixed;z-index:10;bottom:22px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid #385170;background:#0b1830dd;border-radius:16px;backdrop-filter:blur(15px);box-shadow:0 10px 35px #0006}
+.nav{width:42px;height:38px;border:0;border-radius:10px;background:#1c3557;color:white;font-size:20px;cursor:pointer}.nav:hover{background:#2d527e}
+.counter{font-size:13px;color:#c5d2e8;min-width:58px;text-align:center;font-variant-numeric:tabular-nums}
+.progress{position:fixed;z-index:11;bottom:0;left:0;height:4px;background:linear-gradient(90deg,var(--cyan),var(--blue));transition:width .4s}
+.top-tools{position:fixed;z-index:12;right:22px;top:18px;display:flex;gap:8px}
+.top-tools button{border:1px solid #385170;background:#0b1830cc;color:#dce8fb;padding:9px 12px;border-radius:10px;cursor:pointer}
+.hintline{position:fixed;z-index:4;left:24px;bottom:26px;color:#8295b4;font-size:11px}
+@media(max-width:760px){.deck{padding:18px 12px 82px}.slide{width:calc(100vw - 24px);height:calc(100vh - 110px);min-height:0;grid-template-columns:1fr;grid-template-rows:auto minmax(150px,30%);gap:15px;padding:24px;overflow:auto}.image-zone{min-height:150px}.top-tools{right:10px;top:10px}.hintline{display:none}.table-wrap{max-height:310px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="top-tools"><button id="overviewBtn" title="Lihat daftar slide">☷ Daftar slide</button><button id="fullBtn">⛶ Layar penuh</button></div>
+<main class="deck" id="deck"></main>
+<div class="hintline">← → untuk berpindah slide · Tempel gambar dengan Ctrl/⌘ + V</div>
+<nav class="controls" aria-label="Navigasi presentasi"><button class="nav" id="prev" aria-label="Sebelumnya">‹</button><span class="counter" id="counter">01 / 11</span><button class="nav" id="next" aria-label="Berikutnya">›</button></nav>
+<div class="progress" id="progress"></div>
+<input type="file" id="filePicker" accept="image/*" hidden>
+<script>
+const slides = [{"kicker": "LOGIKA MATEMATIKA", "title": "Tabel Kebenaran", "subtitle": "Kasus Kertas Contekan", "body": "Memahami simbol, menghitung True/False, dan menentukan baris yang sesuai.", "bullets": ["Kelompok 8", "Ahmad Reza Fahlevy — 310126024005", "Muhammad Isa Ansyari — 310126024000", "Ramadistra Nur Izmi Al Idwan — 310126023998"], "layout": "cover"}, {"kicker": "01 · MEMAHAMI KASUS", "title": "Siapa pemilik kertas contekan?", "subtitle": "Tiga mahasiswa memberikan pernyataan tentang pemilik kertas.", "quotes": [["Andi", "“Kertas ini milik Aldi dan Ardi.”"], ["Aldi", "“Jika kertas ini milik Andi atau Ardi, maka bukan milik saya.”"], ["Ardi", "“Kertas ini bukan milik saya atau Aldi.”"]], "callout": "Informasi penting: pengawas yakin bahwa Andi dan Aldi berbohong.", "layout": "quotes"}, {"kicker": "02 · KASUS STUDI", "title": "Tugas yang harus diselesaikan", "subtitle": "Gunakan tabel kebenaran untuk menentukan pemilik kertas.", "steps": ["Tuliskan pernyataan dari tiap mahasiswa ke dalam ekspresi logika.", "Tuliskan tabel kebenaran dari 3 mahasiswa tersebut.", "Tentukan siapa pemilik kertas contekan berdasarkan tabel kebenaran, dengan syarat Andi dan Aldi berbohong."], "callout": "Syarat utama: pernyataan Andi dan Aldi harus bernilai False.", "layout": "steps"}, {"kicker": "03 · SIMBOL YANG DIGUNAKAN", "title": "Kenali variabel dan operator logika", "subtitle": "Nama pemilik dan kata penghubung diubah menjadi simbol.", "table": [["Simbol", "Makna"], ["r", "Kertas milik Aldi"], ["s", "Kertas milik Ardi"], ["t", "Kertas milik Andi"], ["∧", "DAN — kedua bagian harus True"], ["∨", "ATAU — minimal satu bagian True"], ["¬", "TIDAK — membalik True menjadi False, atau sebaliknya"], ["→", "JIKA … MAKA — False hanya saat True → False"]], "layout": "table"}, {"kicker": "04 · KOMBINASI VARIABEL", "title": "Ada 8 kemungkinan nilai", "subtitle": "Tiga variabel (r, s, t) menghasilkan 2³ = 8 kombinasi True/False.", "table": [["No.", "r", "s", "t"], ["1", "True", "True", "True"], ["2", "True", "True", "False"], ["3", "True", "False", "True"], ["4", "True", "False", "False"], ["5", "False", "True", "True"], ["6", "False", "True", "False"], ["7", "False", "False", "True"], ["8", "False", "False", "False"]], "layout": "table"}, {"kicker": "05 · MENGHITUNG NILAI", "title": "Terapkan aturan logika", "subtitle": "Hitung nilai setiap pernyataan pada seluruh kombinasi.", "formulas": [["Andi", "t = r ∧ s", "True ∧ True = True; selain itu False."], ["Aldi", "r = (t ∨ s) → ¬r", "Hitung t ∨ s, lalu ¬r. Implikasi hanya False jika bagian kiri True dan bagian kanan False."], ["Ardi", "s = ¬s ∧ ¬r", "Balik nilai s dan r, kemudian gunakan DAN."]], "callout": "Aturan implikasi: True → False = False. Selain itu = True.", "layout": "formulas"}, {"kicker": "A · EKSPRESI LOGIKA", "title": "Terjemahkan setiap pernyataan", "subtitle": "Ekspresi disusun sesuai kata penghubung dalam kalimat.", "table": [["Mahasiswa", "Pernyataan", "Ekspresi logika"], ["Andi", "Milik Aldi DAN Ardi", "t = r ∧ s"], ["Aldi", "Jika milik Andi ATAU Ardi, maka bukan milik Aldi", "r = (t ∨ s) → ¬r"], ["Ardi", "Bukan milik Ardi DAN bukan milik Aldi", "s = ¬s ∧ ¬r"]], "callout": "Catatan: rumus Ardi ditafsirkan sebagai “bukan milik Ardi maupun Aldi”.", "layout": "table"}, {"kicker": "B · TABEL KEBENARAN", "title": "Hasil seluruh kombinasi", "subtitle": "Baris ke-3 ditandai karena Andi dan Aldi sama-sama False.", "table": [["No.", "r", "s", "t", "Andi", "Aldi", "Ardi"], ["1", "True", "True", "True", "True", "False", "False"], ["2", "True", "True", "False", "True", "False", "False"], ["3", "True", "False", "True", "False", "False", "False"], ["4", "True", "False", "False", "False", "True", "False"], ["5", "False", "True", "True", "False", "True", "False"], ["6", "False", "True", "False", "False", "True", "False"], ["7", "False", "False", "True", "False", "True", "True"], ["8", "False", "False", "False", "False", "True", "True"]], "highlightRow": 3, "layout": "table"}, {"kicker": "C · MENENTUKAN PEMILIK", "title": "Pilih baris yang memenuhi syarat", "subtitle": "Andi dan Aldi harus sama-sama berbohong (False).", "table": [["No.", "Andi", "Aldi", "Sesuai syarat?"], ["1", "True", "False", "Tidak — Andi True"], ["2", "True", "False", "Tidak — Andi True"], ["3", "False", "False", "Ya — keduanya False"], ["4", "False", "True", "Tidak — Aldi True"], ["5–8", "False", "True", "Tidak — Aldi True"]], "highlightRow": 3, "callout": "Hanya baris ke-3 yang memenuhi syarat: pernyataan Andi dan Aldi sama-sama False.", "layout": "table"}, {"kicker": "C · HASIL DAN KESIMPULAN", "title": "Nilai pada baris ke-3", "subtitle": "Ambil nilai r, s, dan t dari baris yang memenuhi syarat.", "table": [["Variabel", "Nilai", "Makna"], ["r", "True", "Kertas milik Aldi"], ["s", "False", "Kertas bukan milik Ardi"], ["t", "True", "Kertas milik Andi"]], "callout": "Kesimpulan berdasarkan tabel: kertas tersebut milik Andi dan Aldi, bukan milik Ardi.", "layout": "conclusion"}, {"kicker": "RINGKASAN", "title": "Cara menyelesaikan soal tabel kebenaran", "subtitle": "Enam langkah untuk menyelesaikan masalah serupa.", "steps": ["Tentukan variabel dan arti setiap simbol.", "Ubah kalimat menjadi ekspresi logika.", "Buat 2ⁿ kombinasi True/False.", "Buat tabel kebenarannya.", "Tentukan syarat penyelesaian masalah.", "Tuliskan hasil dan kesimpulannya."], "body": "Terima kasih!", "layout": "steps"}];
+const deck=document.getElementById('deck');let current=0, targetZone=null;
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function tableHTML(rows,highlight){return `<div class="table-wrap"><table>${rows.map((r,i)=>`<tr class="${i===highlight?'highlight':''}">${r.map((v,j)=>`${i===0?'<th>':'<td>'}${esc(v)}${i===0?'</th>':'</td>'}`).join('')}</tr>`).join('')}</table></div>`}
+function mainHTML(s){
+ if(s.layout==='cover')return `<div class="content cover"><div class="kicker">${esc(s.kicker)}</div><h1>${esc(s.title)}</h1><div class="subtitle">${esc(s.subtitle)}</div><p>${esc(s.body)}</p><div class="people"><b>${s.bullets[0]}</b><br>${s.bullets.slice(1).map(esc).join('<br>')}</div></div>`;
+ let body='';
+ if(s.quotes)body=s.quotes.map(q=>`<div class="quote"><b>${esc(q[0])}</b><span>${esc(q[1])}</span></div>`).join('');
+ if(s.steps)body=`<ol>${s.steps.map(x=>`<li>${esc(x)}</li>`).join('')}</ol>`;
+ if(s.table)body=tableHTML(s.table,s.highlightRow);
+ if(s.formulas)body=s.formulas.map(f=>`<div class="formula"><b>${esc(f[0])}</b><strong>${esc(f[1])}</strong><span>${esc(f[2])}</span></div>`).join('');
+ return `<div class="content"><div class="kicker">${esc(s.kicker)}</div><h1>${esc(s.title)}</h1><div class="subtitle">${esc(s.subtitle||'')}</div>${body}${s.callout?`<div class="callout">${esc(s.callout)}</div>`:''}${s.body==='Terima kasih!'?'<div class="thanks">Terima kasih! ✨</div>':''}</div>`;
+}
+function render(){
+ deck.innerHTML=slides.map((s,i)=>`<section class="slide ${i===current?'active':''}" data-slide="${i}">${mainHTML(s)}<div class="image-zone" data-zone="${i}"><div class="hint"><span class="plus">＋</span><b>Tambahkan gambar</b><br>klik untuk memilih, tarik file ke sini, atau tempel gambar (Ctrl/⌘ + V)</div><div class="image-actions"><button class="small-btn replace">Ganti</button><button class="small-btn remove">Hapus</button></div></div></section>`).join('');
+ document.querySelectorAll('.image-zone').forEach(zone=>{
+  const i=+zone.dataset.zone;
+  zone.addEventListener('click',e=>{if(e.target.closest('button'))return;targetZone=zone;document.getElementById('filePicker').click()});
+  zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('drag')});
+  zone.addEventListener('dragleave',()=>zone.classList.remove('drag'));
+  zone.addEventListener('drop',e=>{e.preventDefault();zone.classList.remove('drag');const f=e.dataTransfer.files[0];if(f)loadImage(f,zone)});
+  zone.querySelector('.replace').onclick=()=>{targetZone=zone;document.getElementById('filePicker').click()};
+  zone.querySelector('.remove').onclick=()=>{zone.querySelector('img')?.remove();zone.classList.remove('has-image');saveImage(i,null)};
+  restoreImage(i,zone);
+ });
+ update();
+}
+function saveImage(i,data){try{const k='logika-slide-image-'+i;if(data)localStorage.setItem(k,data);else localStorage.removeItem(k)}catch(e){console.warn('Penyimpanan browser penuh; gambar tetap tampil selama halaman dibuka.')}}
+function restoreImage(i,zone){try{const data=localStorage.getItem('logika-slide-image-'+i);if(data)showImage(data,zone)}catch(e){}}
+function showImage(src,zone){let img=zone.querySelector('img');if(!img){img=document.createElement('img');zone.appendChild(img)}img.src=src;zone.classList.add('has-image');}
+function loadImage(file,zone){if(!file.type.startsWith('image/'))return;const reader=new FileReader();reader.onload=()=>{showImage(reader.result,zone);saveImage(+zone.dataset.zone,reader.result)};reader.readAsDataURL(file)}
+document.getElementById('filePicker').addEventListener('change',e=>{if(e.target.files[0]&&targetZone)loadImage(e.target.files[0],targetZone);e.target.value=''});
+document.addEventListener('paste',e=>{const items=[...(e.clipboardData?.items||[])];const item=items.find(x=>x.type.startsWith('image/'));if(!item)return;const zone=document.querySelector('.slide.active .image-zone');if(zone)loadImage(item.getAsFile(),zone)});
+function go(n){const old=document.querySelector('.slide.active');if(old)old.classList.remove('active');current=(n+slides.length)%slides.length;document.querySelectorAll('.slide')[current].classList.add('active');update()}
+function update(){document.getElementById('counter').textContent=String(current+1).padStart(2,'0')+' / '+slides.length;document.getElementById('progress').style.width=((current+1)/slides.length*100)+'%';document.getElementById('prev').disabled=false}
+document.getElementById('prev').onclick=()=>go(current-1);document.getElementById('next').onclick=()=>go(current+1);
+document.addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();go(current+1)}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(current-1)}if(e.key==='Home')go(0);if(e.key==='End')go(slides.length-1)});
+document.getElementById('fullBtn').onclick=()=>{if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()};
+document.getElementById('overviewBtn').onclick=()=>{const n=prompt('Masukkan nomor slide (1–'+slides.length+')');if(n&&Number(n)>=1&&Number(n)<=slides.length)go(Number(n)-1)};
+render();
+</script>
+</body></html>
